@@ -7,7 +7,6 @@ WORKDIR /app
 
 COPY --link package.json pnpm-lock.yaml* ./
 
-SHELL ["/bin/ash", "-xeo", "pipefail", "-c"]
 RUN npm install -g pnpm
 
 RUN --mount=type=cache,id=pnpm-store,target=/root/.local/share/pnpm/store pnpm fetch | grep -v "cross-device link not permitted\|Falling back to copying packages from store"
@@ -25,7 +24,6 @@ ARG REVISION
 COPY --link --from=deps /app/node_modules ./node_modules/
 COPY . .
 
-SHELL ["/bin/ash", "-xeo", "pipefail", "-c"]
 RUN npm run telemetry \
  && mkdir config \
  && NEXT_PUBLIC_BUILDTIME=$BUILDTIME NEXT_PUBLIC_VERSION=$VERSION NEXT_PUBLIC_REVISION=$REVISION npm run build
