@@ -33,7 +33,7 @@ RUN npm run telemetry \
  && NEXT_PUBLIC_BUILDTIME=$BUILDTIME NEXT_PUBLIC_VERSION=$VERSION NEXT_PUBLIC_REVISION=$REVISION npm run build
 
 # Production image, copy all the files and run next
-FROM docker.io/node:18-alpine AS runner
+FROM docker.io/node:18-bullseye AS runner
 LABEL org.opencontainers.image.title "Homepage"
 LABEL org.opencontainers.image.description "A self-hosted services landing page, with docker and service integrations."
 LABEL org.opencontainers.image.url="https://github.com/benphelps/homepage"
