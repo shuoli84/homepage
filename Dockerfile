@@ -1,7 +1,7 @@
 # syntax = docker/dockerfile:latest
 
 # Install dependencies only when needed
-FROM docker.io/node:18-alpine AS deps
+FROM node:18-bullseye AS deps
 
 WORKDIR /app
 
@@ -17,7 +17,7 @@ RUN --mount=type=cache,id=pnpm-store,target=/root/.local/share/pnpm/store pnpm f
 RUN --mount=type=cache,id=pnpm-store,target=/root/.local/share/pnpm/store pnpm install -r --offline
 
 # Rebuild the source code only when needed
-FROM docker.io/node:18-alpine AS builder
+FROM node:18-bullseye AS builder
 WORKDIR /app
 
 ARG BUILDTIME
@@ -33,7 +33,8 @@ RUN npm run telemetry \
  && NEXT_PUBLIC_BUILDTIME=$BUILDTIME NEXT_PUBLIC_VERSION=$VERSION NEXT_PUBLIC_REVISION=$REVISION npm run build
 
 # Production image, copy all the files and run next
-FROM docker.io/node:18-bullseye AS runner
+
+FROM node:18-bullseye-slim AS runner
 LABEL org.opencontainers.image.title "Homepage"
 LABEL org.opencontainers.image.description "A self-hosted services landing page, with docker and service integrations."
 LABEL org.opencontainers.image.url="https://github.com/benphelps/homepage"
