@@ -51,8 +51,6 @@ COPY --link --from=builder --chown=1000:1000 /app/.next/standalone ./
 COPY --link --from=builder --chown=1000:1000 /app/.next/static/ ./.next/static/
 COPY --link --chmod=755 docker-entrypoint.sh /usr/local/bin/
 
-RUN apk add --no-cache su-exec
-
 ENV PORT 3000
 EXPOSE $PORT
 
